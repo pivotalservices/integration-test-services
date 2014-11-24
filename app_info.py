@@ -15,7 +15,10 @@ JSON_STRUCT = {
 
 URLS = {
   "orgs": "/v2/organizations",
-  "envs": "/v2/apps/{0}/env",
+  "envs": "/v2/apps/{0}/env"
+}
+
+CMDS = {
   "gets": "cf curl {0} -X 'GET'"
 }
 
@@ -73,7 +76,7 @@ class AppInfo():
     return (appenv_obj, [org_err, space_err, app_err, appenv_err])
 
   def _command_create(self, url):
-    return URLS["gets"].format(url)
+    return CMDS["gets"].format(url)
  
   def _get_entity(self, url, response_parser):
     cmd = self._command_create(url)
