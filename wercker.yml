@@ -1,0 +1,17 @@
+box: wercker/rvm
+build:
+  steps:
+    - wercker/bundle-install@1.1.1
+    - validate-wercker-step
+
+    - script:
+        name: Make sure python is there
+        code: |
+          sudo apt-get install -y python
+          sudo apt-get install -y libxslt-dev libxml2-dev libevent-dev
+          sudo pip install pyvows
+
+    - script:
+        name: Run some basic unit tests
+        code: |
+          pyvows --pattern='*_unittest.py'

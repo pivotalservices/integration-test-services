@@ -1,0 +1,30 @@
+{
+   "staging_env_json": {},
+   "running_env_json": {},
+   "environment_json": {},
+   "system_env_json": {
+      "VCAP_SERVICES": {}
+   },
+   "application_env_json": {
+      "VCAP_APPLICATION": {
+         "limits": {
+            "mem": 1024,
+            "disk": 1024,
+            "fds": 16384
+         },
+         "application_version": "2c506750-bdd2-4dd1-8e15-09b16aa10eb4",
+         "application_name": "sample-todo",
+         "application_uris": [
+            "sample-todo.cfapps.io"
+         ],
+         "version": "2c506750-bdd2-4dd1-8e15-09b16aa10eb4",
+         "name": "sample-todo",
+         "space_name": "development",
+         "space_id": "3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29",
+         "uris": [
+            "sample-todo.cfapps.io"
+         ],
+         "users": null
+      }
+   }
+}

@@ -1,0 +1,32 @@
+{
+   "total_results": 1,
+   "total_pages": 1,
+   "prev_url": null,
+   "next_url": null,
+   "resources": [
+      {
+         "metadata": {
+            "guid": "3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29",
+            "url": "/v2/spaces/3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29",
+            "created_at": "2014-04-18T16:47:05+00:00",
+            "updated_at": null
+         },
+         "entity": {
+            "name": "development",
+            "organization_guid": "f292cb85-c218-4829-866b-74b76a9304ab",
+            "space_quota_definition_guid": null,
+            "organization_url": "/v2/organizations/f292cb85-c218-4829-866b-74b76a9304ab",
+            "developers_url": "/v2/spaces/3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29/developers",
+            "managers_url": "/v2/spaces/3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29/managers",
+            "auditors_url": "/v2/spaces/3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29/auditors",
+            "apps_url": "/v2/spaces/3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29/apps",
+            "routes_url": "/v2/spaces/3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29/routes",
+            "domains_url": "/v2/spaces/3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29/domains",
+            "service_instances_url": "/v2/spaces/3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29/service_instances",
+            "app_events_url": "/v2/spaces/3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29/app_events",
+            "events_url": "/v2/spaces/3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29/events",
+            "security_groups_url": "/v2/spaces/3ae57ca4-bd06-4a8c-ab4b-7b8ddfa75d29/security_groups"
+         }
+      }
+   ]
+}
