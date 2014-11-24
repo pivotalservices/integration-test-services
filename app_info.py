@@ -13,6 +13,12 @@ JSON_STRUCT = {
   "APP_ID" : "guid"
 }
 
+URLS = {
+  "orgs": "/v2/organizations",
+  "envs": "/v2/apps/{0}/env",
+  "gets": "cf curl {0} -X 'GET'"
+}
+
 class AppInfo():
 
   def __init__(self, **kwargs):
@@ -26,7 +32,7 @@ class AppInfo():
     self.service_plan = self.env["SERVICE_PLAN"]
   
   def _orgs_url(self):
-    return "/v2/organizations"
+    return URLS["orgs"]
 
   def _space_url_generator(self, json_string):
     org_object = self._url_generator(json_string, JSON_STRUCT["ORG_NAME"], self.org, self._default_compare )
@@ -41,7 +47,7 @@ class AppInfo():
   def _app_env_url(self, json_string):
     appinfo = self._url_generator_base(json_string, JSON_STRUCT["APP_NAME"], self.app_name, self._default_compare, JSON_STRUCT["META"] )
     app_guid = appinfo[0][JSON_STRUCT["APP_ID"]]
-    app_env_url = "/v2/apps/{0}/env".format(app_guid)
+    app_env_url = URLS["envs"].format(app_guid)
     return app_env_url
 
   def _app_env_obj(self, json_string):
@@ -67,7 +73,7 @@ class AppInfo():
     return (appenv_obj, [org_err, space_err, app_err, appenv_err])
 
   def _command_create(self, url):
-    return "cf curl {0} -X 'GET'".format(url)
+    return URLS["gets"].format(url)
  
   def _get_entity(self, url, response_parser):
     cmd = self._command_create(url)
