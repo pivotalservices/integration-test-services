@@ -89,7 +89,7 @@ class ServiceInfo():
     if self._prior_run_was_clean([target_error, service_error, push_error, bind_error, details_error]):
       response_string, details_error = self.get_app_env_details()
     
-    return (response_string, [target_error, service_error, push_error, bind_error, details_error])
+    return (response_string, [target_error, service_error, push_error, bind_error]+details_error)
 
   def _cleanup_run(self):
     target_error = None
@@ -117,7 +117,7 @@ class ServiceInfo():
       msg, err = self._setup_run()
 
     elif self.action == JSON_STRUCT["ACTION_DESTROY"]:
-      self._cleanup_run()
+      msg, err = self._cleanup_run()
 
     else:
       msg = "unset or invalid ACTION env variable"

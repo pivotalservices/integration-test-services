@@ -88,9 +88,42 @@ class ModuleTestsForAppInfo(Vows.Context):
     env["SPACE"] = "development"
     env["APP_NAME"] = "sample-todo"
     env["SERVICE_INSTANCE_NAME"] = "sample-todo-service"
-    env["SERVICE_TYPE"] = "pubnub"
-    env["SERVICE_PLAN"] = "free"
+    env["SERVICE_TYPE"] = "elephantsql"
+    env["SERVICE_PLAN"] = "turtle"
+    env["ACTION"] = "setup"
     return env
+
+  class WhenMakingSetupCallsSuccessfully(Vows.Context):
+    def topic(self, env):
+      env["ACTION"] = "setup"
+      app_info = ServiceInfo( SYS_CALL=mock_success_cli_sys_call,
+                          ENV_VARIABLES=env )
+      return app_info
+  
+    def run_call_should_return_json(self, topic):
+      app_info = topic
+      app_details_control = json.loads(_get_filestring(APPENVFILE))
+      app_details, err = app_info.run()
+      non_empty_errors = [ x for x in err if x ]
+      error_count = len(non_empty_errors)
+      expect(json.loads(app_details)).to_equal(app_details_control)
+      expect(error_count).to_equal(0)
+
+  class WhenMakingCleanupCallsSuccessfully(Vows.Context):
+    def topic(self, env):
+      env["ACTION"] = "cleanup"
+      app_info = ServiceInfo( SYS_CALL=mock_success_cli_sys_call,
+                          ENV_VARIABLES=env )
+      return app_info
+  
+    def run_call_should_return_cleanup_output(self, topic):
+      app_info = topic
+      app_details_control = json.loads(_get_filestring(APPENVFILE))
+      app_details, err = app_info.run()
+      non_empty_errors = [ x for x in err if x ]
+      error_count = len(non_empty_errors)
+      expect(len(app_details)).to_be_greater_than(2)
+      expect(error_count).to_equal(0)
 
   class WhenMakingCallsSuccessfully(Vows.Context):
     def topic(self, env):
@@ -108,7 +141,7 @@ class ModuleTestsForAppInfo(Vows.Context):
       app_details, err = app_info.get_app_env_details()
       non_empty_errors = [ x for x in err if x ]
       error_count = len(non_empty_errors)
-      expect(app_details).to_equal(app_details_control)
+      expect(json.loads(app_details)).to_equal(app_details_control)
       expect(error_count).to_equal(0)
     
     def delete_app_should_yield_success_output(self, topic):
@@ -128,8 +161,4 @@ class ModuleTestsForAppInfo(Vows.Context):
 
     def set_target_should_yield_success_output(self, topic):
       test_cli_success_output(TARGET_FILE, topic.set_target)
-
     
-
-
-
