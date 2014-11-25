@@ -1,0 +1,3 @@
+Binding service sample-todo-service to app mockapp in org pivotalservices / space development as jcalabrese@pivotal.io...
+OK
+TIP: Use 'cf restage' to ensure your env variable changes take effect
