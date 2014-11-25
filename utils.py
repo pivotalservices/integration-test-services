@@ -1,6 +1,6 @@
 import subprocess
 
-def exec_string(self, cmdString):
+def exec_string(cmdString):
   stdout = ""
   err = False
 

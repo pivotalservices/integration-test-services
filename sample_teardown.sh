@@ -1,0 +1,9 @@
+export CF_CLI=cf
+export ORG=pivotalservices
+export SPACE=development
+export APP_NAME=sample-todo
+export SERVICE_INSTANCE_NAME=sample-todo-service
+export SERVICE_TYPE=elephantsql
+export SERVICE_PLAN=turtle
+export ACTION=cleanup
+python run.py

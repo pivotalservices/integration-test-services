@@ -43,7 +43,7 @@ HIJACK_MOCK_CALLS = [
     "name": BIND_SERVICE_FILE
   },
   {
-    "rgx": re.compile(".* push .* -p ./mockapp -b https://github.com/cloudfoundry-community/staticfile-buildpack.git --no-start --no-route --no-manifest"),
+    "rgx": re.compile(".* push .* -p ./mockapp --no-start --no-route --no-manifest"),
     "name": PUSH_APP_FILE
   },
   {

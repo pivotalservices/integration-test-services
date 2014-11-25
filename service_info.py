@@ -11,7 +11,9 @@ JSON_STRUCT = {
   "APP_NAME": "name",
   "SPACE_URL": "spaces_url",
   "APP_URL": "apps_url",
-  "APP_ID" : "guid"
+  "APP_ID" : "guid",
+  "ACTION_SETUP": "setup",
+  "ACTION_DESTROY": "cleanup"
 }
 
 URLS = {
@@ -24,7 +26,7 @@ CMDS = {
   "add_service": "{0} create-service {1} {2} {3}",
   "remove_service": "{0} delete-service {1} -f",
   "bind_service": "{0} bind-service {1} {2}",
-  "push_app": "{0} push {1} -p ./mockapp -b https://github.com/cloudfoundry-community/staticfile-buildpack.git --no-start --no-route --no-manifest",
+  "push_app": "{0} push {1} -p ./mockapp --no-start --no-route --no-manifest",
   "delete_app": "{0} delete {1} -f",
   "target": "{0} target -o {1} -s {2}"
 }
@@ -41,6 +43,7 @@ class ServiceInfo():
     self.service_instance_name = self.env["SERVICE_INSTANCE_NAME"]
     self.service_type = self.env["SERVICE_TYPE"]
     self.service_plan = self.env["SERVICE_PLAN"]
+    self.action = self.env["ACTION"]
 
   def _prior_run_was_clean(self, error_array):
     return len([ x for x in error_array if x ]) == 0
@@ -61,10 +64,67 @@ class ServiceInfo():
 
     if self._prior_run_was_clean([org_err, space_err, app_err, appenv_err]):
       appenv_obj, appenv_err = self._get_entity(appenvurl, self._app_env_obj)
-      return_object = appenv_obj
+      return_object = json.dumps(appenv_obj)
 
     return (return_object, [org_err, space_err, app_err, appenv_err])
   
+  def _setup_run(self):
+    target_error = None
+    service_error = None
+    push_error = None
+    bind_error = None
+    details_error = None
+    response_string = ""
+    response_string, target_error = self.set_target()
+
+    if self._prior_run_was_clean([target_error, service_error, push_error, bind_error, details_error]):
+      response_string, service_error = self.add_service()
+    
+    if self._prior_run_was_clean([target_error, service_error, push_error, bind_error, details_error]):
+      response_string, push_error = self.push_app()
+    
+    if self._prior_run_was_clean([target_error, service_error, push_error, bind_error, details_error]):
+      response_string, service_error = self.bind_service()
+    
+    if self._prior_run_was_clean([target_error, service_error, push_error, bind_error, details_error]):
+      response_string, details_error = self.get_app_env_details()
+    
+    return (response_string, [target_error, service_error, push_error, bind_error, details_error])
+
+  def _cleanup_run(self):
+    target_error = None
+    delete_error = None
+    service_error = None
+    response = []
+    out, target_error = self.set_target()
+    response.append(out)
+
+    if self._prior_run_was_clean([target_error, delete_error, service_error]):
+      out, delete_error = self.delete_app()
+      response.append(out)
+    
+    if self._prior_run_was_clean([target_error, delete_error, service_error]):
+      out, service_error = self.remove_service()
+      response.append(out)
+
+    return (response, [target_error, delete_error, service_error])
+
+  def run(self):
+    msg = ""
+    err = False
+
+    if self.action == JSON_STRUCT["ACTION_SETUP"]:
+      msg, err = self._setup_run()
+
+    elif self.action == JSON_STRUCT["ACTION_DESTROY"]:
+      self._cleanup_run()
+
+    else:
+      msg = "unset or invalid ACTION env variable"
+      err = True
+
+    return (msg, err)
+
   def delete_app(self):
     cmd = CMDS["delete_app"].format(self.cf_cli, self.app_name)
     res, err = self.sys_call(cmd)
