@@ -5,8 +5,8 @@ def exec_string(cmdString):
   err = False
 
   try:
-    stdout = subprocess.check_output(cmdString, shell=True)
-    
+    stdout, _ = subprocess.Popen(cmdString, stdout=subprocess.PIPE, shell=True).communicate()
+
   except subprocess.CalledProcessError as e:
     stdout = "error: {0}".format(e)
     err = True
