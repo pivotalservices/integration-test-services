@@ -1,0 +1,10 @@
+name: cf-integration-test-service
+version: 0.0.1
+description: a step to spin up a service instance and return the service binding information. This is in an effort to enable integration tests on bound services in cloud foundry
+keywords:
+  - cloudfoundry
+  - pivotalcf
+  - integrationtest
+  - boundservice
+  - servicebinding
+
