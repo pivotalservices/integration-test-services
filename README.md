@@ -30,4 +30,5 @@ deploy:
         service_instance: $serviceinstance
         service_type: $servicetype
         action: (setup / cleanup)
+        outvar_name: $varname
 ```

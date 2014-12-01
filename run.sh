@@ -49,6 +49,11 @@ then
     fail 'missing or empty option action, please check wercker.yml'
 fi
 
+if [ ! -n "$WERCKER_CF_BOUND_SERVICE_INTEGRATION_TEST_OUTVAR_NAME" ]
+then
+    fail 'missing or empty option outvar_name, please check wercker.yml'
+fi
+ 
 
 wget http://go-cli.s3-website-us-east-1.amazonaws.com/releases/v6.3.2/cf-linux-amd64.tgz
 tar -zxvf cf-linux-amd64.tgz
@@ -65,7 +70,9 @@ export SERVICE_INSTANCE_NAME=${WERCKER_CF_BOUND_SERVICE_INTEGRATION_TEST_SERVICE
 export SERVICE_TYPE=${WERCKER_CF_BOUND_SERVICE_INTEGRATION_TEST_SERVICE_TYPE}
 export SERVICE_PLAN=${WERCKER_CF_BOUND_SERVICE_INTEGRATION_TEST_SERVICE_PLAN}
 export ACTION=${WERCKER_CF_BOUND_SERVICE_INTEGRATION_TEST_ACTION}
-(cd $WERCKER_STEP_ROOT && python run.py)
+TMPOUTPUT=(cd $WERCKER_STEP_ROOT && python run.py)
+echo ${TMPOUTPUT}
+eval "export ${WERCKER_CF_BOUND_SERVICE_INTEGRATION_TEST_OUTVAR_NAME}=${TMPOUTPUT}"
 
 if [[ $? -ne 0 ]];then
     warning $push_output
